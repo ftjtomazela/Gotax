@@ -3,139 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gota X - O Melhor Limpa Bordas</title>
+    <title>Gota X - Bordas Impecáveis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* Estilos Básicos */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            background-color: #f9f9f9;
-        }
-        h1, h2, h3 {
-            color: #0056b3;
-        }
-        a {
-            text-decoration: none;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Botões */
-        .cta-button {
-            display: inline-block;
-            background-color: #28a745;
-            color: white;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 5px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: background 0.3s;
-        }
-        .cta-button:hover {
-            background-color: #218838;
+        /* Variáveis de Cores e Estilos Base */
+        :root {
+            --azul-escuro: #0f3b57;
+            --azul-claro: #e6f4f9;
+            --verde-cta: #8dc63f;
+            --verde-cta-hover: #7ab32f;
+            --texto-escuro: #333333;
+            --fundo-branco: #ffffff;
         }
 
-        /* Seção Hero (Primeira Dobra) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--fundo-branco);
+            color: var(--texto-escuro);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Botão Principal (CTA) */
+        .btn {
+            display: inline-block;
+            background-color: var(--verde-cta);
+            color: var(--fundo-branco);
+            padding: 18px 35px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(141, 198, 63, 0.4);
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background-color: var(--verde-cta-hover);
+            transform: translateY(-2px);
+        }
+
+        /* 1. SEÇÃO HERO (Azul Escuro) */
         .hero {
-            background-color: #e0f7fa;
+            background-color: var(--azul-escuro);
+            color: var(--fundo-branco);
+            padding: 60px 0;
             text-align: center;
-            padding: 60px 20px;
-            border-bottom: 3px solid #0056b3;
         }
         .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .hero h1 span {
+            color: var(--verde-cta);
         }
         .hero p {
             font-size: 1.2rem;
+            font-weight: 300;
             margin-bottom: 30px;
+            max-width: 800px;
+            margin-inline: auto;
+        }
+        .hero-image-placeholder {
+            margin-top: 40px;
+            background: #ccc;
+            height: 350px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        /* Seção de Vídeo */
-        .video-section {
+        /* 2. TÍTULOS DE SEÇÃO */
+        .section-title {
             text-align: center;
-            padding: 50px 20px;
-            background-color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            margin: 60px 0 40px 0;
+            text-transform: uppercase;
         }
+
+        /* 3. VÍDEO */
         .video-container {
             max-width: 800px;
             margin: 0 auto;
-            border: 5px solid #0056b3;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            background: #000;
         }
         video {
             width: 100%;
             display: block;
         }
 
-        /* Seção de Benefícios e Uso */
-        .features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            padding: 50px 20px;
-            background-color: #f1f1f1;
+        /* 4. BENEFÍCIOS (Ícones) */
+        .benefits {
+            background-color: var(--azul-claro);
+            padding: 20px 0 60px 0;
+            margin-top: 60px;
         }
-        .feature-box {
-            flex: 1;
-            min-width: 300px;
-            margin: 15px;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        .benefit-card img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+        }
+        .benefit-card h3 {
+            font-size: 1.1rem;
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+        }
+        .benefit-card p {
+            font-size: 0.9rem;
         }
 
-        /* Seção de Oferta (Checkout) */
-        .pricing {
+        /* 5. PASSOS (Imagens) */
+        .steps {
+            padding: 20px 0 60px 0;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
             text-align: center;
-            padding: 60px 20px;
-            background-color: white;
+        }
+        .step-card .img-placeholder {
+            background: #ddd;
+            height: 200px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+        .step-card h3 {
+            color: var(--azul-escuro);
+            font-size: 1.2rem;
+        }
+
+        /* 6. PRECIFICAÇÃO (Cards) */
+        .pricing {
+            background-color: var(--azul-claro);
+            padding: 20px 0 80px 0;
         }
         .pricing-cards {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
+            align-items: flex-end;
             gap: 20px;
-            margin-top: 30px;
+            flex-wrap: wrap;
         }
-        .card {
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            padding: 30px;
-            width: 300px;
-            background: #fff;
+        .price-card {
+            background: var(--fundo-branco);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            width: 320px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
         }
-        .card.destaque {
-            border-color: #0056b3;
-            box-shadow: 0 8px 15px rgba(0,86,179,0.2);
-            transform: scale(1.05);
+        .price-card.highlight {
+            border: 2px solid var(--azul-escuro);
+            box-shadow: 0 15px 30px rgba(15, 59, 87, 0.2);
+            padding: 50px 20px;
+            position: relative;
         }
-        .frete-info {
-            margin-top: 30px;
-            font-size: 0.9rem;
-            color: #555;
-            background: #e9ecef;
-            padding: 15px;
-            border-radius: 5px;
-            display: inline-block;
+        .highlight-tag {
+            background: var(--azul-escuro);
+            color: white;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .price-card h3 {
+            font-size: 1.2rem;
+            color: var(--texto-escuro);
+        }
+        .price-card h2 {
+            font-size: 2.5rem;
+            color: var(--azul-escuro);
+            margin: 20px 0;
+        }
+        .price-card .btn {
+            width: 100%;
+            padding: 15px 0;
+            font-size: 1rem;
         }
 
-        /* Rodapé */
+        /* Logística e Confiança */
+        .trust-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 50px;
+            padding: 20px;
+            background: var(--fundo-branco);
+            border-radius: 10px;
+        }
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* 7. RODAPÉ */
         footer {
-            background-color: #333;
-            color: white;
+            background-color: var(--azul-escuro);
+            color: var(--fundo-branco);
+            padding: 40px 0;
             text-align: center;
-            padding: 30px 20px;
+        }
+        .guarantee {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .guarantee-badge {
+            width: 80px;
+            height: 80px;
+            background: var(--verde-cta);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            text-align: center;
+            font-size: 0.8rem;
+            border: 2px dashed white;
         }
     </style>
 </head>
@@ -143,89 +275,128 @@
 
     <header class="hero">
         <div class="container">
-            <h1>Chega de Esfregar! Limpe a Borda da sua Piscina em Segundos com Gota X</h1>
-            <p>O limpador concentrado que remove o amarelado e a sujeira impregnada sem esforço. Veja a mágica acontecer.</p>
-            <a href="#ofertas" class="cta-button">🛒 QUERO LIMPAR MINHA PISCINA AGORA</a>
-            <p style="margin-top: 15px; font-size: 0.9rem; color: #555;">⭐️⭐️⭐️⭐️⭐️ "Mais de 1.000 piscinas limpas neste verão."</p>
+            <h1>Revele a Beleza da sua Piscina:<br>Bordas Impecáveis em Segundos com <span>Gota X</span>.</h1>
+            <p>O limpador concentrado que elimina o amarelado e a sujeira impregnada, sem esforço. Prova visual instantânea.</p>
+            <a href="#comprar" class="btn">🛒 Quero Minha Piscina Brilhando</a>
+            
+            <div class="hero-image-placeholder">
+                [INSERIR IMAGEM DE ANTES E DEPOIS DO AZULEJO COM O FRASCO AQUI]
+            </div>
+            <p style="margin-top: 15px; font-size: 0.9rem; font-weight: 600;">⭐⭐⭐⭐⭐ Mais de 1.000 clientes satisfeitos e piscinas transformadas.</p>
         </div>
     </header>
 
-    <section class="video-section">
+    <section class="container">
+        <h2 class="section-title">Prova Visual: Veja a Mágica Acontecer</h2>
+        <div class="video-container">
+            <video controls muted autoplay loop>
+                <source src="IMG_9664.mov" type="video/mp4">
+                Seu navegador não suporta a tag de vídeo.
+            </video>
+        </div>
+    </section>
+
+    <section class="benefits">
         <div class="container">
-            <h2>Veja com seus próprios olhos a diferença:</h2>
-            <p>Limpeza real, sem cortes. Apenas Gota X, uma esponja e alguns segundos.</p>
-            
-            <div class="video-container">
-                <video controls muted autoplay loop>
-                    <source src="IMG_9664.mov" type="video/mp4">
-                    Seu navegador não suporta a tag de vídeo.
-                </video>
+            <h2 class="section-title">Por que escolher Gota X?</h2>
+            <div class="grid-4">
+                <div class="benefit-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3003/3003280.png" alt="Ação Instantânea">
+                    <h3>Ação Instantânea</h3>
+                    <p>Derrete a sujeira amarelada no primeiro contato.</p>
+                </div>
+                <div class="benefit-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" alt="Sem Esforço">
+                    <h3>Sem Esforço</h3>
+                    <p>Diga adeus à esfregação exaustiva. Gota X faz o trabalho pesado.</p>
+                </div>
+                <div class="benefit-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/481/481308.png" alt="Fórmula Concentrada">
+                    <h3>Fórmula Concentrada</h3>
+                    <p>Máximo rendimento. Pouco produto para grandes resultados.</p>
+                </div>
+                <div class="benefit-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3256/3256082.png" alt="Amigo da Piscina">
+                    <h3>Amigo da Piscina</h3>
+                    <p>Seguro para azulejos e não altera o equilíbrio químico da água.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="features">
-        <div class="container" style="display: flex; flex-wrap: wrap; gap: 20px;">
-            <div class="feature-box">
-                <h3>O Segredo dos Profissionais</h3>
-                <p>O <strong>Gota X</strong> não é um sabão comum. É uma fórmula super concentrada desenvolvida para derreter gordura, protetor solar e encardido.</p>
-                <ul>
-                    <li><strong>Ação Rápida:</strong> Resultados na primeira passada.</li>
-                    <li><strong>Sem Esforço:</strong> O produto faz o trabalho pesado.</li>
-                    <li><strong>Super Concentrado:</strong> Rende muito mais.</li>
-                </ul>
+    <section class="steps container">
+        <h2 class="section-title">Veja como é fácil usar em 3 passos</h2>
+        <div class="grid-3">
+            <div class="step-card">
+                <div class="img-placeholder">[FOTO COLOCANDO NA ESPONJA]</div>
+                <h3>1. Aplique</h3>
+                <p>Coloque um pouco de Gota X em uma esponja.</p>
             </div>
-            <div class="feature-box">
-                <h3>Como Usar (3 Passos Simples)</h3>
-                <ol>
-                    <li>🧤 <strong>Proteja-se:</strong> Coloque uma luva de borracha.</li>
-                    <li>🧽 <strong>Aplique:</strong> Coloque o Gota X na esponja.</li>
-                    <li>✨ <strong>Passe e Enxágue:</strong> Esfregue levemente a borda e jogue a água da própria piscina.</li>
-                </ol>
+            <div class="step-card">
+                <div class="img-placeholder">[FOTO PASSANDO NA BORDA]</div>
+                <h3>2. Limpe</h3>
+                <p>Passe suavemente na borda suja.</p>
+            </div>
+            <div class="step-card">
+                <div class="img-placeholder">[FOTO JOGANDO ÁGUA]</div>
+                <h3>3. Enxágue</h3>
+                <p>Jogue a água da própria piscina. Pronto!</p>
             </div>
         </div>
     </section>
 
-    <section id="ofertas" class="pricing">
+    <section id="comprar" class="pricing">
         <div class="container">
-            <h2>Escolha o seu Kit Gota X</h2>
+            <h2 class="section-title">Escolha seu kit Gota X</h2>
             
             <div class="pricing-cards">
-                <div class="card">
-                    <h3>Kit Teste</h3>
-                    <p>1 Frasco</p>
+                <div class="price-card">
+                    <h3>Kit Experiência</h3>
+                    <p>(1 Unidade)</p>
                     <h2>R$ 49,90</h2>
-                    <a href="#" class="cta-button" style="padding: 10px 20px; font-size: 1rem;">Comprar Agora</a>
+                    <a href="#" class="btn">Comprar Agora</a>
                 </div>
 
-                <div class="card destaque">
-                    <div style="background: #0056b3; color: white; padding: 5px; border-radius: 5px; margin-bottom: 10px; font-size: 0.8rem; font-weight: bold;">MAIS VENDIDO</div>
+                <div class="price-card highlight">
+                    <div class="highlight-tag">KIT VERÃO - MAIS POPULAR</div>
                     <h3>Kit Verão</h3>
-                    <p>3 Frascos</p>
+                    <p>(3 Unidades)</p>
                     <h2>R$ 119,90</h2>
-                    <a href="#" class="cta-button" style="padding: 10px 20px; font-size: 1rem;">Comprar Agora</a>
+                    <p style="font-size: 0.8rem; margin-bottom: 15px;">(R$ 39,97/un)</p>
+                    <a href="#" class="btn">Aproveitar Oferta</a>
                 </div>
 
-                <div class="card">
-                    <h3>Kit Manutenção</h3>
-                    <p>5 Frascos</p>
+                <div class="price-card">
+                    <h3>Kit Manutenção Total</h3>
+                    <p>(5 Unidades)</p>
                     <h2>R$ 179,90</h2>
-                    <a href="#" class="cta-button" style="padding: 10px 20px; font-size: 1rem;">Comprar Agora</a>
+                    <p style="font-size: 0.8rem; margin-bottom: 15px;">(R$ 35,98/un)</p>
+                    <a href="#" class="btn">Comprar com Desconto</a>
                 </div>
             </div>
 
-            <div class="frete-info">
-                <strong>📦 Envio Rápido e Barato:</strong> Entregamos em todo o Brasil. Frete calculado automaticamente no carrinho com as melhores transportadoras via <strong>Melhor Envio</strong>. 
-                <br>💳 Pagamento seguro: Cartão, Boleto ou Pix (5% de desconto).
+            <div class="trust-section">
+                <div class="trust-item">
+                    <span>💳 Pagamento Seguro via Pix e Cartão</span>
+                </div>
+                <div class="trust-item">
+                    <span>📦 Integração com <strong>Melhor Envio</strong> para as melhores tarifas e prazos em todo o Brasil.</span>
+                </div>
             </div>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <h3>Garantia Blindada Gota X</h3>
-            <p>Teste por 7 dias. Se a borda não ficar limpa como no vídeo, devolvemos seu dinheiro.</p>
-            <p style="margin-top: 20px; font-size: 0.8rem; color: #aaa;">&copy; 2026 Gota X. Todos os direitos reservados.</p>
+            <div class="guarantee">
+                <div class="guarantee-badge">GARANTIA<br>7 DIAS</div>
+                <div style="text-align: left;">
+                    <h3 style="color: var(--verde-cta);">Testes por 7 dias.</h3>
+                    <p>Se a borda não ficar limpa como no vídeo, devolvemos seu dinheiro.</p>
+                </div>
+            </div>
+            <hr style="border-color: #333; margin: 20px 0;">
+            <p style="font-size: 0.8rem; color: #ccc;">E-mail de contato: suporte@gotax.com.br<br>CNPJ: 00.000.000/0000-00<br>Termos de Uso e Política de Privacidade</p>
         </div>
     </footer>
 
