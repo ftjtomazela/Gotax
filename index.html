@@ -19,17 +19,17 @@
         .hero h1 { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 20px; text-transform: uppercase; }
         .hero h1 span { color: var(--verde-cta); }
         .section-title { text-align: center; font-size: 2rem; color: var(--azul-escuro); margin: 60px 0 30px 0; text-transform: uppercase; }
-        .video-container { max-width: 800px; margin: 0 auto; border-radius: 10px; overflow: hidden; background: #000; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
-        video { width: 100%; display: block; }
-
+        
         .checkout-section { background-color: var(--azul-claro); padding: 60px 20px; margin-top: 50px; }
         .checkout-box { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; background-color: #fff; }
+        .form-group input[readonly] { background-color: #f0f0f0; color: #666; }
         
         footer { background-color: var(--azul-escuro); color: var(--fundo-branco); padding: 30px 0; text-align: center; margin-top: 50px; }
-    /* --- BOTÃO DO WHATSAPP --- */
+        
+        /* --- BOTÃO DO WHATSAPP --- */
         .whatsapp-float { position: fixed; width: 60px; height: 60px; bottom: 20px; right: 20px; background-color: #25d366; color: #FFF; border-radius: 50px; box-shadow: 0px 4px 10px rgba(0,0,0,0.3); z-index: 1000; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .whatsapp-float:hover { background-color: #128c7e; transform: scale(1.1); }
         .whatsapp-float img { width: 35px; height: 35px; }
@@ -40,17 +40,16 @@
         .selo-icones { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .selo-icones img { height: 28px; object-fit: contain; opacity: 0.8; }
 
-        /* --- PERGUNTAS FREQUENTES (FAQ) --- */
+        /* --- FAQ --- */
         .faq-section { padding: 40px 20px; background-color: var(--fundo-branco); }
         .faq-container { max-width: 800px; margin: 0 auto; }
         .faq-item { background: var(--azul-claro); margin-bottom: 12px; border-radius: 8px; border: 1px solid #cce7f0; transition: 0.3s; }
         .faq-item summary { font-weight: 600; font-size: 1.05rem; color: var(--azul-escuro); cursor: pointer; padding: 15px 20px; outline: none; list-style: none; position: relative; }
-        .faq-item summary::-webkit-details-marker { display: none; } /* Esconde a setinha padrão */
+        .faq-item summary::-webkit-details-marker { display: none; }
         .faq-item summary::after { content: '+'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; color: var(--verde-cta); font-weight: bold; }
         .faq-item[open] summary::after { content: '-'; }
         .faq-item p { padding: 0 20px 15px 20px; color: #555; font-size: 0.95rem; border-top: 1px solid #cce7f0; margin-top: 5px; padding-top: 15px; }
     </style>
-
 </head>
 <body>
 
@@ -62,18 +61,14 @@
         </div>
     </header>
 
-<section class="container" style="margin-top: 40px; margin-bottom: 40px;">
+    <section class="container" style="margin-top: 40px; margin-bottom: 40px;">
         <h2 class="section-title">Prova Visual: Veja a Mágica Acontecer</h2>
-        
         <div style="max-width: 500px; margin: 0 auto; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 4px solid var(--azul-escuro);">
-            
             <div style="padding:75% 0 0 0;position:relative;">
                 <iframe src="https://player.vimeo.com/video/1171841802?autoplay=1&loop=1&muted=1&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="IMG_9664"></iframe>
             </div>
             <script src="https://player.vimeo.com/api/player.js"></script>
-            
         </div>
-        
         <p style="text-align: center; margin-top: 15px; font-weight: 600; color: var(--azul-escuro);">⚠️ A sujeira impregnada derrete em segundos!</p>
     </section>
 
@@ -82,22 +77,57 @@
             <h2 style="text-align: center; color: var(--azul-escuro); margin-bottom: 10px;">Finalizar Compra - Gota X</h2>
             <p id="total-display" style="text-align: center; margin-bottom: 30px; font-weight: bold; font-size: 1.4rem; color: var(--verde-cta);">Total: R$ 46,90</p>
             
-            <h3 style="font-size: 1.1rem; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 5px;">1. Endereço de Entrega</h3>
+            <h3 style="font-size: 1.1rem; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 5px;">1. Seus Dados e Endereço</h3>
             
             <div class="form-group">
-                <label>CEP: (Digite para calcular o frete)</label>
+                <label>Nome Completo:</label>
+                <input type="text" id="nomeCliente" placeholder="Digite seu nome">
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>CPF:</label>
+                    <input type="text" id="cpfCliente" placeholder="000.000.000-00">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>WhatsApp:</label>
+                    <input type="text" id="telefoneCliente" placeholder="(00) 00000-0000">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>CEP: (Busca automática)</label>
                 <input type="text" id="cep" placeholder="00000-000" maxlength="9">
             </div>
             <div id="opcoes-frete" style="background: var(--azul-claro); padding: 15px; border-radius: 5px; margin-bottom: 15px; display: none;"></div>
 
             <div style="display: flex; gap: 15px;">
-                <div class="form-group" style="flex: 2;">
+                <div class="form-group" style="flex: 3;">
                     <label>Rua/Avenida:</label>
                     <input type="text" id="streetName">
                 </div>
                 <div class="form-group" style="flex: 1;">
                     <label>Número:</label>
                     <input type="text" id="streetNumber">
+                </div>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Complemento:</label>
+                    <input type="text" id="complemento" placeholder="Apto, Casa, etc.">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Bairro:</label>
+                    <input type="text" id="bairro">
+                </div>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 2;">
+                    <label>Cidade:</label>
+                    <input type="text" id="cidade" readonly>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Estado:</label>
+                    <input type="text" id="estado" readonly>
                 </div>
             </div>
 
@@ -115,10 +145,9 @@
             </div>
             
             <a href="sucesso.html" class="btn" id="btn-rastreio" style="display: none; width: 100%; margin-top: 20px; text-align: center; background-color: var(--azul-escuro);">Acompanhar Meu Pedido</a>
+            
             <div class="selos-seguranca">
-                <div class="selo-texto">
-                    <span>🔒 Ambiente 100% Seguro e Criptografado</span>
-                </div>
+                <div class="selo-texto"><span>🔒 Ambiente 100% Seguro e Criptografado</span></div>
                 <div class="selo-icones">
                     <img src="https://logospng.org/download/mercado-pago/logo-mercado-pago-icone-1024.png" alt="Mercado Pago" title="Mercado Pago">
                     <img src="https://logospng.org/download/pix/logo-pix-icone-1024.png" alt="Pix" title="Pix">
@@ -130,50 +159,42 @@
     </section>
 
     <footer>
-        <div class="container">
-            <p>Garantia de 7 dias. Pagamento 100% criptografado e seguro.</p>
-        </div>
-
+        <div class="container"><p>Garantia de 7 dias. Pagamento 100% criptografado e seguro.</p></div>
         <section class="faq-section">
-        <h2 class="section-title" style="margin-top: 20px;">Dúvidas Frequentes</h2>
-        <div class="faq-container">
-            
-            <details class="faq-item">
-                <summary>O Gota X mancha o vinil ou a fibra da piscina?</summary>
-                <p>Não! O Gota X foi desenvolvido para limpar profundamente sem agredir. Ele pode ser usado em piscinas de vinil, fibra ou azulejo com total segurança, mantendo as cores vivas e a borda intacta.</p>
-            </details>
-
-            <details class="faq-item">
-                <summary>Como funciona o frete e a entrega?</summary>
-                <p>Nós utilizamos o sistema do Melhor Envio para garantir o frete mais barato e seguro para você. Assim que o pagamento é aprovado, seu pedido é separado e despachado. Você receberá um código para rastrear a entrega até a sua porta.</p>
-            </details>
-
-            <details class="faq-item">
-                <summary>O pagamento no site é seguro?</summary>
-                <p>100% seguro! Todo o processo de pagamento é blindado e criptografado pelo <strong>Mercado Pago</strong>. Nós não temos acesso aos dados do seu cartão de crédito.</p>
-            </details>
-
-            <details class="faq-item">
-                <summary>E se eu não gostar do produto?</summary>
-                <p>Nós confiamos tanto no nosso produto que oferecemos uma Garantia Incondicional de 7 dias. Se o Gota X não derreter a sujeira da sua piscina como mostramos no vídeo, nós devolvemos 100% do seu dinheiro. O risco é todo nosso.</p>
-            </details>
-
-        </div>
-    </section>
+            <h2 class="section-title" style="margin-top: 20px;">Dúvidas Frequentes</h2>
+            <div class="faq-container">
+                <details class="faq-item"><summary>O Gota X mancha o vinil ou a fibra da piscina?</summary><p>Não! Ele foi desenvolvido para limpar profundamente sem agredir.</p></details>
+                <details class="faq-item"><summary>Como funciona o frete e a entrega?</summary><p>Utilizamos o Melhor Envio. Você receberá um código para rastrear a entrega.</p></details>
+                <details class="faq-item"><summary>O pagamento no site é seguro?</summary><p>100% seguro! Blindado pelo Mercado Pago.</p></details>
+                <details class="faq-item"><summary>E se eu não gostar do produto?</summary><p>Oferecemos Garantia de 7 dias ou seu dinheiro de volta.</p></details>
+            </div>
+        </section>
     </footer>
 
     <script>
         const valorProduto = 46.90;
-        
-        // Sua Chave Pública do Mercado Pago
         const mp = new MercadoPago('APP_USR-f0185d36-2987-425e-9074-9c02632b719b', { locale: 'pt-BR' });
         const bricksBuilder = mp.bricks();
         let paymentBrickController;
 
-        // Calcula frete ao digitar o CEP
+        // Calcula frete E busca endereço automático (ViaCEP)
         document.getElementById('cep').addEventListener('blur', async function() {
             const cepDigitado = this.value.replace(/\D/g, '');
             if(cepDigitado.length === 8) {
+                
+                // 1. Busca Rua, Bairro e Cidade sozinho
+                try {
+                    const viaCepRes = await fetch(`https://viacep.com.br/ws/${cepDigitado}/json/`);
+                    const dadosCep = await viaCepRes.json();
+                    if(!dadosCep.erro) {
+                        document.getElementById('streetName').value = dadosCep.logradouro;
+                        document.getElementById('bairro').value = dadosCep.bairro;
+                        document.getElementById('cidade').value = dadosCep.localidade;
+                        document.getElementById('estado').value = dadosCep.uf;
+                    }
+                } catch(e) { console.log("Erro ao buscar CEP"); }
+
+                // 2. Calcula o frete
                 const divFrete = document.getElementById('opcoes-frete');
                 divFrete.style.display = 'block';
                 divFrete.innerHTML = '<p>Calculando melhores fretes... 🚚</p>';
@@ -184,7 +205,6 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ cepDestino: cepDigitado })
                     });
-                    
                     const transportadoras = await res.json();
                     if(transportadoras.length > 0) {
                         let htmlFrete = '<label style="font-weight: bold; margin-bottom: 10px; display: block;">Escolha o Envio:</label>';
@@ -198,41 +218,26 @@
                             `;
                         });
                         divFrete.innerHTML = htmlFrete;
-                    } else {
-                        divFrete.innerHTML = '<p style="color:red;">Não encontramos frete para este CEP.</p>';
-                    }
-                } catch (error) {
-                    divFrete.innerHTML = '<p style="color:red;">Erro ao calcular frete.</p>';
-                }
+                    } else { divFrete.innerHTML = '<p style="color:red;">Não encontramos frete para este CEP.</p>'; }
+                } catch (error) { divFrete.innerHTML = '<p style="color:red;">Erro ao calcular frete.</p>'; }
             }
         });
 
-        // Constrói o módulo de pagamento (Pix e Cartão)
         async function iniciarPagamento(valorFrete) {
             const totalFinal = valorProduto + parseFloat(valorFrete);
             document.getElementById('total-display').innerText = 'Total: R$ ' + totalFinal.toFixed(2).replace('.', ',');
-            
             document.getElementById('titulo-pagamento').style.display = 'block';
 
             if (paymentBrickController) paymentBrickController.unmount();
             
             const settings = {
-                initialization: {
-                    amount: parseFloat(totalFinal.toFixed(2)),
-                },
+                initialization: { amount: parseFloat(totalFinal.toFixed(2)) },
                 customization: {
-                    paymentMethods: {
-                        creditCard: "all",
-                        bankTransfer: "all" // Habilita o Pix
-                    },
-                    payer: {
-                        email: "",
-                    }
+                    paymentMethods: { creditCard: "all", bankTransfer: "all" },
+                    payer: { email: "" }
                 },
                 callbacks: {
-                    onReady: () => {
-                        document.getElementById('btn-rastreio').style.display = 'block';
-                    },
+                    onReady: () => { document.getElementById('btn-rastreio').style.display = 'block'; },
                     onSubmit: ({ selectedPaymentMethod, formData }) => {
                         return new Promise((resolve, reject) => {
                             fetch("https://gotax-api.onrender.com/processar-pagamento", {
@@ -244,40 +249,40 @@
                                 const data = await res.json();
                                 if (res.ok) {
                                     
-                                    // NOVIDADE: Dispara o alerta de venda para o seu e-mail!
+                                    // DISPARA O E-MAIL COM TODOS OS DADOS COMPLETOS DA ETIQUETA!
                                     fetch("https://formsubmit.co/ajax/tomazelapiscinas@gmail.com", {
                                         method: "POST",
-                                        headers: { 
-                                            'Content-Type': 'application/json',
-                                            'Accept': 'application/json'
-                                        },
+                                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                                         body: JSON.stringify({
                                             Assunto: "💰 NOVA VENDA APROVADA - GOTA X",
                                             Produto: "Kit Gota X",
-                                            Valor_Total: totalFinal.toFixed(2),
-                                            Email_do_Cliente: formData.payer.email,
+                                            Valor_Pago: "R$ " + totalFinal.toFixed(2),
+                                            Nome: document.getElementById('nomeCliente').value,
+                                            CPF: document.getElementById('cpfCliente').value,
+                                            WhatsApp: document.getElementById('telefoneCliente').value,
+                                            Email: formData.payer.email,
                                             CEP: document.getElementById('cep').value,
                                             Rua: document.getElementById('streetName').value,
-                                            Numero: document.getElementById('streetNumber').value
+                                            Numero: document.getElementById('streetNumber').value,
+                                            Complemento: document.getElementById('complemento').value,
+                                            Bairro: document.getElementById('bairro').value,
+                                            Cidade_UF: document.getElementById('cidade').value + " - " + document.getElementById('estado').value
                                         })
                                     });
 
-                                    resolve(); // O Brick fica com o "check" verde de sucesso
+                                    resolve(); 
                                     
-                                    // MÁGICA: Se o servidor devolveu os dados do QR Code, mostramos na tela!
                                     if (data.point_of_interaction && data.point_of_interaction.transaction_data) {
                                         document.getElementById('pix-resultado').style.display = 'block';
                                         document.getElementById('qr-code-img').src = `data:image/jpeg;base64,${data.point_of_interaction.transaction_data.qr_code_base64}`;
                                         document.getElementById('pix-copia-cola').value = data.point_of_interaction.transaction_data.qr_code;
                                     }
                                 } else {
-                                    console.error("Erro do Mercado Pago:", data);
                                     alert("Falha no pagamento: " + (data.error || "Verifique os dados digitados."));
                                     reject();
                                 }
                             })
                             .catch(error => { 
-                                console.error("Erro de Rede:", error);
                                 alert('Erro de conexão com o servidor. Tente novamente.');
                                 reject();
                             });
@@ -286,15 +291,12 @@
                     onError: (error) => { console.error("Erro no Brick:", error); }
                 }
             };
-            
             paymentBrickController = await bricksBuilder.create("payment", "paymentBrick_container", settings);
         }
 
-        // Função para o botão "Copiar Código" do Pix
         function copiarPix() {
             var copyText = document.getElementById("pix-copia-cola");
-            copyText.select();
-            document.execCommand("copy");
+            copyText.select(); document.execCommand("copy");
             alert("Código Pix copiado! Abra o app do seu banco para pagar.");
         }
     </script>
