@@ -243,6 +243,25 @@
                             .then(async (res) => {
                                 const data = await res.json();
                                 if (res.ok) {
+                                    
+                                    // NOVIDADE: Dispara o alerta de venda para o seu e-mail!
+                                    fetch("https://formsubmit.co/ajax/tomazelapiscinas@gmail.com", {
+                                        method: "POST",
+                                        headers: { 
+                                            'Content-Type': 'application/json',
+                                            'Accept': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            Assunto: "💰 NOVA VENDA APROVADA - GOTA X",
+                                            Produto: "Kit Gota X",
+                                            Valor_Total: totalFinal.toFixed(2),
+                                            Email_do_Cliente: formData.payer.email,
+                                            CEP: document.getElementById('cep').value,
+                                            Rua: document.getElementById('streetName').value,
+                                            Numero: document.getElementById('streetNumber').value
+                                        })
+                                    });
+
                                     resolve(); // O Brick fica com o "check" verde de sucesso
                                     
                                     // MÁGICA: Se o servidor devolveu os dados do QR Code, mostramos na tela!
