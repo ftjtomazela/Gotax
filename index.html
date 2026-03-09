@@ -26,6 +26,7 @@
         .form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
         .form-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; background-color: #fff; }
         .form-group input[readonly] { background-color: #f0f0f0; color: #666; }
+        .obrigatorio { color: red; font-weight: bold; }
         
         footer { background-color: var(--azul-escuro); color: var(--fundo-branco); padding: 30px 0; text-align: center; margin-top: 50px; }
         
@@ -80,33 +81,33 @@
             <h3 style="font-size: 1.1rem; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 5px;">1. Seus Dados e Endereço</h3>
             
             <div class="form-group">
-                <label>Nome Completo:</label>
+                <label>Nome Completo: <span class="obrigatorio">*</span></label>
                 <input type="text" id="nomeCliente" placeholder="Digite seu nome">
             </div>
             <div style="display: flex; gap: 15px;">
                 <div class="form-group" style="flex: 1;">
-                    <label>CPF:</label>
+                    <label>CPF: <span class="obrigatorio">*</span></label>
                     <input type="text" id="cpfCliente" placeholder="000.000.000-00">
                 </div>
                 <div class="form-group" style="flex: 1;">
-                    <label>WhatsApp:</label>
+                    <label>WhatsApp: <span class="obrigatorio">*</span></label>
                     <input type="text" id="telefoneCliente" placeholder="(00) 00000-0000">
                 </div>
             </div>
 
             <div class="form-group">
-                <label>CEP: (Busca automática)</label>
+                <label>CEP: (Busca automática) <span class="obrigatorio">*</span></label>
                 <input type="text" id="cep" placeholder="00000-000" maxlength="9">
             </div>
             <div id="opcoes-frete" style="background: var(--azul-claro); padding: 15px; border-radius: 5px; margin-bottom: 15px; display: none;"></div>
 
             <div style="display: flex; gap: 15px;">
                 <div class="form-group" style="flex: 3;">
-                    <label>Rua/Avenida:</label>
+                    <label>Rua/Avenida: <span class="obrigatorio">*</span></label>
                     <input type="text" id="streetName">
                 </div>
                 <div class="form-group" style="flex: 1;">
-                    <label>Número:</label>
+                    <label>Número: <span class="obrigatorio">*</span></label>
                     <input type="text" id="streetNumber">
                 </div>
             </div>
@@ -116,17 +117,17 @@
                     <input type="text" id="complemento" placeholder="Apto, Casa, etc.">
                 </div>
                 <div class="form-group" style="flex: 1;">
-                    <label>Bairro:</label>
+                    <label>Bairro: <span class="obrigatorio">*</span></label>
                     <input type="text" id="bairro">
                 </div>
             </div>
             <div style="display: flex; gap: 15px;">
                 <div class="form-group" style="flex: 2;">
-                    <label>Cidade:</label>
+                    <label>Cidade: <span class="obrigatorio">*</span></label>
                     <input type="text" id="cidade" readonly>
                 </div>
                 <div class="form-group" style="flex: 1;">
-                    <label>Estado:</label>
+                    <label>Estado: <span class="obrigatorio">*</span></label>
                     <input type="text" id="estado" readonly>
                 </div>
             </div>
@@ -240,6 +241,23 @@
                     onReady: () => { document.getElementById('btn-rastreio').style.display = 'block'; },
                     onSubmit: ({ selectedPaymentMethod, formData }) => {
                         return new Promise((resolve, reject) => {
+                            
+                            // ===== TRAVA DE SEGURANÇA: CAMPOS OBRIGATÓRIOS =====
+                            const nome = document.getElementById('nomeCliente').value.trim();
+                            const cpf = document.getElementById('cpfCliente').value.trim();
+                            const telefone = document.getElementById('telefoneCliente').value.trim();
+                            const cep = document.getElementById('cep').value.trim();
+                            const rua = document.getElementById('streetName').value.trim();
+                            const numero = document.getElementById('streetNumber').value.trim();
+                            const bairro = document.getElementById('bairro').value.trim();
+
+                            if (!nome || !cpf || !telefone || !cep || !rua || !numero || !bairro) {
+                                alert("⚠️ Atenção: Por favor, preencha todos os campos com asterisco vermelho (*) antes de finalizar o pagamento.");
+                                reject(); // Trava o Mercado Pago
+                                return;   // Sai da função e não envia nada
+                            }
+                            // ===================================================
+
                             fetch("https://gotax-api.onrender.com/processar-pagamento", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
@@ -257,15 +275,15 @@
                                             Assunto: "💰 NOVA VENDA APROVADA - GOTA X",
                                             Produto: "Kit Gota X",
                                             Valor_Pago: "R$ " + totalFinal.toFixed(2),
-                                            Nome: document.getElementById('nomeCliente').value,
-                                            CPF: document.getElementById('cpfCliente').value,
-                                            WhatsApp: document.getElementById('telefoneCliente').value,
+                                            Nome: nome,
+                                            CPF: cpf,
+                                            WhatsApp: telefone,
                                             Email: formData.payer.email,
-                                            CEP: document.getElementById('cep').value,
-                                            Rua: document.getElementById('streetName').value,
-                                            Numero: document.getElementById('streetNumber').value,
+                                            CEP: cep,
+                                            Rua: rua,
+                                            Numero: numero,
                                             Complemento: document.getElementById('complemento').value,
-                                            Bairro: document.getElementById('bairro').value,
+                                            Bairro: bairro,
                                             Cidade_UF: document.getElementById('cidade').value + " - " + document.getElementById('estado').value
                                         })
                                     });
