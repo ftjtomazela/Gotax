@@ -160,7 +160,10 @@
     </section>
 
     <footer>
-        <div class="container"><p>Garantia de 7 dias. Pagamento 100% criptografado e seguro.</p></div>
+        <div class="container">
+            <p>Garantia de 7 dias. Pagamento 100% criptografado e seguro.</p>
+            <p style="font-size: 0.85rem; margin-top: 10px; color: #a1b8c7;">Tomazela Comercio - CNPJ: 40.136.528/0001-07</p>
+        </div>
         <section class="faq-section">
             <h2 class="section-title" style="margin-top: 20px;">Dúvidas Frequentes</h2>
             <div class="faq-container">
@@ -217,13 +220,11 @@
         document.getElementById('cep').addEventListener('blur', async function() {
             const cepDigitado = this.value.replace(/\D/g, '');
             
-            // Máscara do CEP no campo
             if(cepDigitado.length > 4) {
                 this.value = cepDigitado.replace(/(\d{5})(\d)/, '$1-$2');
             }
 
             if(cepDigitado.length === 8) {
-                // 1. Busca Rua, Bairro e Cidade sozinho
                 try {
                     const viaCepRes = await fetch(`https://viacep.com.br/ws/${cepDigitado}/json/`);
                     const dadosCep = await viaCepRes.json();
@@ -235,7 +236,6 @@
                     }
                 } catch(e) { console.log("Erro ao buscar CEP"); }
 
-                // 2. Calcula o frete
                 const divFrete = document.getElementById('opcoes-frete');
                 divFrete.style.display = 'block';
                 divFrete.innerHTML = '<p>Calculando melhores fretes... 🚚</p>';
@@ -293,8 +293,8 @@
 
                             if (!nome || !cpfDigitado || !telefone || !cep || !rua || !numero || !bairro) {
                                 alert("⚠️ Atenção: Por favor, preencha todos os campos obrigatórios (*) antes de finalizar o pagamento.");
-                                reject(); // Trava o Mercado Pago
-                                return;   // Sai da função
+                                reject();
+                                return;
                             }
 
                             if (!validarCPF(cpfDigitado)) {
@@ -303,9 +303,7 @@
                                 reject();
                                 return;
                             }
-                            // ===================================================
 
-                            // Injeta o CPF limpo (só números) no Mercado Pago para ele aprovar a compra!
                             formData.payer.identification = {
                                 type: 'CPF',
                                 number: cpfDigitado.replace(/\D/g, '')
@@ -320,7 +318,6 @@
                                 const data = await res.json();
                                 if (res.ok) {
                                     
-                                    // DISPARA O E-MAIL COM TODOS OS DADOS COMPLETOS DA ETIQUETA!
                                     fetch("https://formsubmit.co/ajax/tomazelapiscinas@gmail.com", {
                                         method: "POST",
                                         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
