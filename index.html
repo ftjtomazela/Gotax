@@ -87,11 +87,11 @@
             <div style="display: flex; gap: 15px;">
                 <div class="form-group" style="flex: 1;">
                     <label>CPF: <span class="obrigatorio">*</span></label>
-                    <input type="text" id="cpfCliente" placeholder="000.000.000-00">
+                    <input type="text" id="cpfCliente" placeholder="000.000.000-00" maxlength="14">
                 </div>
                 <div class="form-group" style="flex: 1;">
                     <label>WhatsApp: <span class="obrigatorio">*</span></label>
-                    <input type="text" id="telefoneCliente" placeholder="(00) 00000-0000">
+                    <input type="text" id="telefoneCliente" placeholder="(00) 00000-0000" maxlength="15">
                 </div>
             </div>
 
@@ -178,20 +178,60 @@
         const bricksBuilder = mp.bricks();
         let paymentBrickController;
 
+        // ===== MÁSCARAS AUTOMÁTICAS (CPF e Celular) =====
+        document.getElementById('cpfCliente').addEventListener('input', function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = v;
+        });
+
+        document.getElementById('telefoneCliente').addEventListener('input', function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            v = v.replace(/^(\d\d)(\d)/g, '($1) $2');
+            v = v.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = v;
+        });
+
+        // ===== VALIDADOR MATEMÁTICO DE CPF =====
+        function validarCPF(cpf) {
+            cpf = cpf.replace(/[^\d]+/g, '');
+            if (cpf == '' || cpf.length != 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+            let add = 0;
+            for (let i = 0; i < 9; i++) add += parseInt(cpf.charAt(i)) * (10 - i);
+            let rev = 11 - (add % 11);
+            if (rev == 10 || rev == 11) rev = 0;
+            if (rev != parseInt(cpf.charAt(9))) return false;
+            add = 0;
+            for (let i = 0; i < 10; i++) add += parseInt(cpf.charAt(i)) * (11 - i);
+            rev = 11 - (add % 11);
+            if (rev == 10 || rev == 11) rev = 0;
+            if (rev != parseInt(cpf.charAt(10))) return false;
+            return true;
+        }
+
         // Calcula frete E busca endereço automático (ViaCEP)
         document.getElementById('cep').addEventListener('blur', async function() {
             const cepDigitado = this.value.replace(/\D/g, '');
+            
+            // Máscara do CEP no campo
+            if(cepDigitado.length > 4) {
+                this.value = cepDigitado.replace(/(\d{5})(\d)/, '$1-$2');
+            }
+
             if(cepDigitado.length === 8) {
-                
                 // 1. Busca Rua, Bairro e Cidade sozinho
                 try {
                     const viaCepRes = await fetch(`https://viacep.com.br/ws/${cepDigitado}/json/`);
                     const dadosCep = await viaCepRes.json();
                     if(!dadosCep.erro) {
-                        document.getElementById('streetName').value = dadosCep.logradouro;
-                        document.getElementById('bairro').value = dadosCep.bairro;
-                        document.getElementById('cidade').value = dadosCep.localidade;
-                        document.getElementById('estado').value = dadosCep.uf;
+                        document.getElementById('streetName').value = dadosCep.logradouro || '';
+                        document.getElementById('bairro').value = dadosCep.bairro || '';
+                        document.getElementById('cidade').value = dadosCep.localidade || '';
+                        document.getElementById('estado').value = dadosCep.uf || '';
                     }
                 } catch(e) { console.log("Erro ao buscar CEP"); }
 
@@ -242,21 +282,34 @@
                     onSubmit: ({ selectedPaymentMethod, formData }) => {
                         return new Promise((resolve, reject) => {
                             
-                            // ===== TRAVA DE SEGURANÇA: CAMPOS OBRIGATÓRIOS =====
+                            // ===== TRAVA DE SEGURANÇA: VERIFICA CAMPOS =====
                             const nome = document.getElementById('nomeCliente').value.trim();
-                            const cpf = document.getElementById('cpfCliente').value.trim();
+                            const cpfDigitado = document.getElementById('cpfCliente').value.trim();
                             const telefone = document.getElementById('telefoneCliente').value.trim();
                             const cep = document.getElementById('cep').value.trim();
                             const rua = document.getElementById('streetName').value.trim();
                             const numero = document.getElementById('streetNumber').value.trim();
                             const bairro = document.getElementById('bairro').value.trim();
 
-                            if (!nome || !cpf || !telefone || !cep || !rua || !numero || !bairro) {
-                                alert("⚠️ Atenção: Por favor, preencha todos os campos com asterisco vermelho (*) antes de finalizar o pagamento.");
+                            if (!nome || !cpfDigitado || !telefone || !cep || !rua || !numero || !bairro) {
+                                alert("⚠️ Atenção: Por favor, preencha todos os campos obrigatórios (*) antes de finalizar o pagamento.");
                                 reject(); // Trava o Mercado Pago
-                                return;   // Sai da função e não envia nada
+                                return;   // Sai da função
+                            }
+
+                            if (!validarCPF(cpfDigitado)) {
+                                alert("❌ Erro: O CPF informado é inválido. Por favor, verifique a digitação.");
+                                document.getElementById('cpfCliente').focus();
+                                reject();
+                                return;
                             }
                             // ===================================================
+
+                            // Injeta o CPF limpo (só números) no Mercado Pago para ele aprovar a compra!
+                            formData.payer.identification = {
+                                type: 'CPF',
+                                number: cpfDigitado.replace(/\D/g, '')
+                            };
 
                             fetch("https://gotax-api.onrender.com/processar-pagamento", {
                                 method: "POST",
@@ -276,7 +329,7 @@
                                             Produto: "Kit Gota X",
                                             Valor_Pago: "R$ " + totalFinal.toFixed(2),
                                             Nome: nome,
-                                            CPF: cpf,
+                                            CPF: cpfDigitado,
                                             WhatsApp: telefone,
                                             Email: formData.payer.email,
                                             CEP: cep,
