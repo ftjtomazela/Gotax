@@ -182,7 +182,7 @@
         </section>
     </footer>
 
-    <script>
+     <script>
         const valorProduto = 46.90;
         const mp = new MercadoPago('APP_USR-f0185d36-2987-425e-9074-9c02632b719b', { locale: 'pt-BR' });
         const bricksBuilder = mp.bricks();
@@ -245,7 +245,7 @@
 
                 const divFrete = document.getElementById('opcoes-frete');
                 divFrete.style.display = 'block';
-                divFrete.innerHTML = '<p>Calculando melhores fretes... 🚚</p>';
+                divFrete.innerHTML = '<p style="color: var(--verde-cta); font-weight: bold;">Calculando melhores fretes... 🚚</p>';
 
                 try {
                     const res = await fetch('https://gotax-api.onrender.com/calcular-frete', {
@@ -253,15 +253,25 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ cepDestino: cepDigitado })
                     });
-                    const transportadoras = await res.json();
+                    let transportadoras = await res.json();
+                    
                     if(transportadoras.length > 0) {
-                        let htmlFrete = '<label style="font-weight: bold; margin-bottom: 10px; display: block;">Escolha o Envio:</label>';
+                        // Ordena do mais barato pro mais caro e pega só os 3 primeiros
+                        transportadoras = transportadoras.sort((a, b) => parseFloat(a.price) - parseFloat(b.price)).slice(0, 3);
+                        
+                        let htmlFrete = '<label style="font-weight: bold; margin-bottom: 10px; display: block;">Escolha o Envio (Mais baratos):</label>';
                         transportadoras.forEach((t, index) => {
                             const preco = parseFloat(t.price); 
+                            
+                            // Limpa nomes estranhos
+                            let nomeAmigavel = t.name;
+                            if(nomeAmigavel.includes('.Package') || nomeAmigavel.includes('.Com') || nomeAmigavel.includes('e-commerce')) nomeAmigavel = 'Frete Econômico';
+                            if(nomeAmigavel.includes('Express')) nomeAmigavel = 'Frete Expresso';
+
                             htmlFrete += `
-                                <div style="margin-bottom: 8px;">
+                                <div style="margin-bottom: 8px; padding: 8px; border: 1px solid #cce7f0; border-radius: 5px; background: #fff;">
                                     <input type="radio" name="freteRadio" value="${preco}" id="frete-${index}" onchange="iniciarPagamento(this.value)">
-                                    <label for="frete-${index}">${t.name} - R$ ${preco.toFixed(2).replace('.', ',')} (Chega em até ${t.delivery_time} dias)</label>
+                                    <label for="frete-${index}" style="cursor: pointer;">${nomeAmigavel} - <strong>R$ ${preco.toFixed(2).replace('.', ',')}</strong> (Até ${t.delivery_time} dias)</label>
                                 </div>
                             `;
                         });
@@ -274,7 +284,11 @@
         async function iniciarPagamento(valorFrete) {
             const totalFinal = valorProduto + parseFloat(valorFrete);
             document.getElementById('total-display').innerText = 'Total: R$ ' + totalFinal.toFixed(2).replace('.', ',');
+            
             document.getElementById('titulo-pagamento').style.display = 'block';
+            
+            // AVISO DE CARREGAMENTO PARA O CLIENTE NÃO FUGIR
+            document.getElementById('paymentBrick_container').innerHTML = '<p style="text-align: center; color: var(--azul-escuro); font-weight: bold; padding: 20px;">🔄 Conectando ambiente seguro do Mercado Pago... Aguarde alguns segundos.</p>';
 
             if (paymentBrickController) paymentBrickController.unmount();
             
@@ -285,11 +299,12 @@
                     payer: { email: "" }
                 },
                 callbacks: {
-                    onReady: () => { document.getElementById('btn-rastreio').style.display = 'block'; },
+                    onReady: () => { 
+                        document.getElementById('btn-rastreio').style.display = 'block'; 
+                    },
                     onSubmit: ({ selectedPaymentMethod, formData }) => {
                         return new Promise((resolve, reject) => {
                             
-                            // ===== TRAVA DE SEGURANÇA: VERIFICA CAMPOS =====
                             const nome = document.getElementById('nomeCliente').value.trim();
                             const cpfDigitado = document.getElementById('cpfCliente').value.trim();
                             const telefone = document.getElementById('telefoneCliente').value.trim();
@@ -324,7 +339,6 @@
                             .then(async (res) => {
                                 const data = await res.json();
                                 if (res.ok) {
-                                    
                                     fetch("https://formsubmit.co/ajax/tomazelapiscinas@gmail.com", {
                                         method: "POST",
                                         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -375,6 +389,7 @@
             alert("Código Pix copiado! Abra o app do seu banco para pagar.");
         }
     </script>
+
     <a href="https://wa.me/5514991561557?text=Olá!%20Estou%20no%20site%20e%20tenho%20uma%20dúvida%20sobre%20o%20Kit%20Gota%20X." class="whatsapp-float" target="_blank" title="Fale com a gente">
         <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp">
     </a>
